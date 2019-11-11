@@ -18,14 +18,9 @@
 ;; show if a link has been blocked already with some gui thing
 ;; block links (on click)
 (defun main ()
-  (with-ui 
-    ))
-
-(defmacro with-ui (&body body)
-  "sets up our ui and executes our body in that context"
-  `(with-ltk ()
-     (let* (())
-       ,@body)))
+  (handler-case (with-user-abort
+		  (build-ui))
+    (user-abort () (uiop:quit 1))))
 
 (defun get-unblocked-domains (domains)
   "goes through DOMAINS and returns the ones that havent been blocked"
@@ -38,6 +33,17 @@
 			     (parse (get *fediverse-gab-link*)))
      collect (text (last-child element))))
 
+(defun make-client (instance &key key secret access-token)
+  "creates a client object for INSTANCE"
+  (declare (inline make-client) (optimize (speed 3)))
+  (setf *client* (make-instance 'tooter:client
+				:base (urlify instance)
+				:key key
+				:secret secret
+				:access-token access-token
+				:name "silence-cl"
+				:scopes '("write:blocks")
+				:website "https://github.com/theZacAttacks/silence-cl")))
 
 ;; with tooter library:
 ;; (file does not exist) get instance from ui, authorize, save token
@@ -53,8 +59,5 @@
 ;;
 ;; (with-open-file (config :direction :out
 ;;                         :if-exists :overwrite)
-;;   (format config "key=~A~%secret=~A~%token=~A~%"
-;;                  (key *client*)
-;;                  (secret *client*)
-;;                  (access-token *client*)))
+;;   )
 ;;  something like that

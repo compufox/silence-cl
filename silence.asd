@@ -8,8 +8,11 @@
   :serial t
   :depends-on (#:ltk #:dexador #:plump
 	       #:clss #:tooter #:with-user-abort
-	       #:cl-cwd)
+	       #:cl-cwd #:trivial-open-browser
+	       #:str)
   :components ((:file "package")
+	       (:file "ui")
+	       (:file "util")
                (:file "silence"))
   :build-operation "program-op"
   :build-pathname "bin/silence"
