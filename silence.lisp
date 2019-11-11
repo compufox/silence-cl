@@ -27,7 +27,8 @@
 		     (format nil "~a" (merge-pathnames
 				       (or (uiop:directory-exists-p #P"dist/bin/") #P"bin/")
 				       (cl-cwd:get-cwd)))))
-  
+
+  (setf *debug-tk* nil)
   (ensure-directories-exist *config-store*)
   (handler-case (with-user-abort
 		  (build-ui))
