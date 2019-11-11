@@ -18,6 +18,7 @@
   "saves a cache of credentails for INSTANCE"
   (with-open-file (config (merge-pathnames (pathname instance)
 					   *config-store*)
+			  :if-exists :overwrite
 			  :if-does-not-exist :create
 			  :direction :output)
     (format config "key=~A~%secret=~A~%token=~A~%"
@@ -29,11 +30,23 @@
   "reads in a config store and returns them"
   (with-open-file (config (merge-pathnames (pathname instance)
 					   *config-store*)
-			  :if-exists nil
+			  :if-does-not-exist nil
 			  :direction :input)
-    (let ((vals (loop for line = (read-line config)
-		   while line
-		   collect (cadr (str:split #\= line)))))
-      (values (car vals)
-	      (cadr vals)
-	      (caddr vals)))))
+    (when config
+      (let ((vals (loop for line = (read-line config nil)
+		     while line
+		     collect (cadr (str:split #\= line)))))
+	(values (car vals)
+		(cadr vals)
+		(caddr vals))))))
+
+
+(defun load-domains-into (widget)
+  (declare (inline load-domains-into))
+  (loop for d in (get-domains)
+     do (listbox-insert widget 0 d)))
+
+(defun block-domain (domain)
+  "blocks DOMAIN"
+  (declare (inline block-domain))
+  (tooter:block *client* domain))

@@ -2,6 +2,7 @@
 
 (in-package #:silence)
 
+(defvar *domain-cache* nil)
 (defvar *client* nil)
 (defvar *fediverse-gab-link*
   "https://fediverse.network/mastodon?age=created&build=gab")
@@ -18,20 +19,23 @@
 ;; show if a link has been blocked already with some gui thing
 ;; block links (on click)
 (defun main ()
+  (ensure-directories-exist *config-store*)
   (handler-case (with-user-abort
 		  (build-ui))
     (user-abort () (uiop:quit 1))))
 
 (defun get-unblocked-domains (domains)
   "goes through DOMAINS and returns the ones that havent been blocked"
-  (let ((blocked (blocked-domains *client*)))
+  (let ((blocked (tooter:blocked-domains *client*)))
     (remove-if (lambda (d) (member d blocked)) domains)))
 
 (defun get-domains ()
   "fetches and parses the domains, returning them as a list"
-  (loop for element across (select "a.gablink"
-			     (parse (get *fediverse-gab-link*)))
-     collect (text (last-child element))))
+  (unless *domain-cache*
+    (setf *domain-cache* (loop for element across (select "a.gablink"
+							  (parse (get *fediverse-gab-link*)))
+			    collect (plump:text (plump:last-child element)))))
+  *domain-cache*)
 
 (defun make-client (instance &key key secret access-token)
   "creates a client object for INSTANCE"
@@ -42,7 +46,7 @@
 				:secret secret
 				:access-token access-token
 				:name "silence-cl"
-				:scopes '("write:blocks")
+				:scopes '("write:blocks" "read:blocks")
 				:website "https://github.com/theZacAttacks/silence-cl")))
 
 ;; with tooter library:
