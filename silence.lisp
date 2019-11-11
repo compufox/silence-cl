@@ -6,7 +6,7 @@
 (defvar *fediverse-gab-link*
   "https://fediverse.network/mastodon?age=created&build=gab")
 (defvar *config-store*
-  #+Unix '"~/.cache/silence/"
+  #+Unix "~/.cache/silence/"
   #+Win32 (let ((p (uiop:getenv "APPDATA")))
 	    (concatenate 'string p "/silence/")))
 

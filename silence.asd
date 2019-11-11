@@ -6,7 +6,9 @@
   :license  "NPLv1+"
   :version "0.0.1"
   :serial t
-  :depends-on (#:ltk #:dexador #:plump #:clss #:tooter)
+  :depends-on (#:ltk #:dexador #:plump
+	       #:clss #:tooter #:with-user-abort
+	       #:cl-cwd)
   :components ((:file "package")
                (:file "silence"))
   :build-operation "program-op"
