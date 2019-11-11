@@ -1,7 +1,7 @@
 ;;;; package.lisp
 
 (defpackage :silence
-  (:use :cl :ltk :with-user-abort)
+  (:use :cl+qt :with-user-abort)
   (:import-from :plump
 		:parse
 		:serialize)

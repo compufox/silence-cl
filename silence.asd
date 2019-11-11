@@ -6,7 +6,7 @@
   :license  "NPLv1+"
   :version "0.1"
   :serial t
-  :depends-on (#:ltk #:dexador #:plump
+  :depends-on (#:qtools-ui #:dexador #:plump
 	       #:clss #:tooter #:with-user-abort
 	       #:cl-cwd #:trivial-open-browser
 	       #:str)
@@ -14,7 +14,7 @@
 	       (:file "ui")
 	       (:file "util")
                (:file "silence"))
-  :build-operation "program-op"
+  :build-operation "qt-program-op"
   :build-pathname "bin/silence"
   :entry-point "silence::main")
 

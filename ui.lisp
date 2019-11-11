@@ -1,4 +1,5 @@
 (in-package :silence)
+(named-readtables:in-readtable :qtools)
 
 (defun set-entry-placeholder (widget text)
   "sets WIDGET (entry) placeholder TEXT and sets up
