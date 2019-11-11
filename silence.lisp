@@ -19,6 +19,15 @@
 ;; show if a link has been blocked already with some gui thing
 ;; block links (on click)
 (defun main ()
+  #+Win32
+  (setf (uiop:getenv "PATH")
+	(concatenate 'string
+		     (uiop:getenv "PATH")
+		     ";"
+		     (format nil "~a" (merge-pathnames
+				       (or (uiop:directory-exists-p #P"dist/bin/") #P"bin/")
+				       (cl-cwd:get-cwd)))))
+  
   (ensure-directories-exist *config-store*)
   (handler-case (with-user-abort
 		  (build-ui))
