@@ -16,7 +16,7 @@
 
 (defun save-credentials-for-instance (instance)
   "saves a cache of credentails for INSTANCE"
-  (with-open-file (config (merge-pathnames (pathname instance)
+  (with-open-file (config (merge-pathnames (pathname (str:replace-all "https://" "" instance))
 					   *config-store*)
 			  :if-exists :overwrite
 			  :if-does-not-exist :create
@@ -28,7 +28,7 @@
 
 (defun read-credentials-for-instance (instance)
   "reads in a config store and returns them"
-  (with-open-file (config (merge-pathnames (pathname instance)
+  (with-open-file (config (merge-pathnames (pathname (str:replace-all "https://" "" instance))
 					   *config-store*)
 			  :if-does-not-exist nil
 			  :direction :input)

@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 echo "making common lisp directory..."
 mkdir ~/common-lisp/ 2>/dev/null
