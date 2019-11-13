@@ -4,7 +4,7 @@
   :description "block gab fediverse instances"
   :author "ava fox"
   :license  "NPLv1+"
-  :version "0.1.1"
+  :version "0.1.3"
   :serial t
   :depends-on (#:ltk #:dexador #:plump
 	       #:clss #:tooter #:with-user-abort
