@@ -42,8 +42,9 @@
 
 
 (defun load-domains-into (widget)
+  "loads the list of unblocked gab domains into WIDGET"
   (declare (inline load-domains-into))
-  (loop for d in (get-domains)
+  (loop for d in (get-unblocked-domains (get-domains))
      do (listbox-insert widget 0 d)))
 
 (defun block-domain (domain)

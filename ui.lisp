@@ -69,9 +69,16 @@ bindings for clearing/etc"
 		      (pack domain-listbox)
 		      (pack block-btn))))
 		(progn
-		  (load-domains-into domain-listbox)
-		  (pack domain-listbox)
-		  (pack block-btn))))))
+		  (if (null (get-unblocked-domains (get-domains)))
+		      (let ((quit-btn (make-instance 'button
+						     :text "quit"
+						     :command #'uiop:quit)))
+			(pack (make-instance 'label :text "you've already blocked all known gab domains!"))
+			(pack quit-btn))
+		      (progn
+			(load-domains-into domain-listbox)
+			(pack domain-listbox)
+			(pack block-btn))))))))
 
       (on-click block-btn
 	(mapcar #'block-domain (get-unblocked-domains (get-domains)))

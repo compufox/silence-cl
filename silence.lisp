@@ -37,7 +37,7 @@
 (defun get-unblocked-domains (domains)
   "goes through DOMAINS and returns the ones that havent been blocked"
   (let ((blocked (tooter:blocked-domains *client*)))
-    (remove-if (lambda (d) (member d blocked)) domains)))
+    (remove-if #'(lambda (d) (member d blocked :test #'string=)) domains)))
 
 (defun get-domains ()
   "fetches and parses the domains, returning them as a list"
@@ -67,11 +67,3 @@
 ;; block domains
 ;;  (blocked-domains *client*)
 ;;  (block "mastodon.social")
-
-;; to save
-;;  save key, secret, access-token, instance url
-;;
-;; (with-open-file (config :direction :out
-;;                         :if-exists :overwrite)
-;;   )
-;;  something like that
