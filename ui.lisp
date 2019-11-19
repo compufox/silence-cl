@@ -27,8 +27,7 @@ bindings for clearing/etc"
 (defun build-ui ()
   "builds our ui and blocks until window is closed"
   (setf *wish-args* '("-name" "silence"))
-  (with-ltk #+(or Unix Linux os-unix) ()
-	    #+Win32 (:debug 1 :serve-event t)
+  (with-ltk ()
     (let* ((frame (make-instance 'frame :master nil
 				 :borderwidth 3 :relief :sunken))
 	   (instance-entry (make-instance 'entry :master frame :text "instance url"))
