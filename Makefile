@@ -1,26 +1,19 @@
-LISPS = sbcl ros clisp cmucl ccl
+LISPS = ros sbcl clisp cmucl ccl
+CMDS = --eval "(ql:quickload :silence)" --eval "(asdf:make :silence)" --eval "(quit)"
 
 ifeq ($(OS),Windows_NT)
-	WHERE = where
+	LISP := $(foreach lisp,$(LISPS), \
+		$(shell where $(lisp)) \
+		$(if $(.SHELLSTATUS),$(strip $(lisp)),))
 else
-	WHERE = which
+	LISP := $(foreach lisp,$(LISPS), \
+		$(if $(findstring $(lisp),"$(shell which $(lisp) 2>/dev/null)"), $(strip $(lisp)),))
 endif
-
-ifeq ($(OS),Windows_NT)
-	NULL = >NUL
-else
-	NULL = 2>/dev/null
-endif
-
-CMDS = --load silence.asd --eval '(ql:quickload :silence)' --eval '(asdf:make :silence)'  --eval '(quit)'
-
-# this doesnt seem to work in windows?
-LISP := $(foreach lisp,$(LISPS), \
-	$(if $(findstring $(lisp),"$(shell $(WHERE) $(lisp) $(NULL))"), $(strip $(lisp)),))
 
 ifeq ($(LISP),)
 	$(error "No lisps found")
 endif
 
-build:
+all: 
 	$(LISP) $(CMDS)
+
